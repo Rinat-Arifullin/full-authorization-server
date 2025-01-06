@@ -1,8 +1,8 @@
 import { applyDecorators, UseGuards } from "@nestjs/common";
 import { UserRole } from "@prisma/__generated__";
 import { Roles } from "./roles.decorator";
-import { AuthGuard } from "../guard/auth.guard";
-import { RoleGuard } from "../guard/role.guard";
+import { AuthGuard } from "../guards/auth.guard";
+import { RoleGuard } from "../guards/role.guard";
 
 export function Authorization(...roles: UserRole[]) {
     if (roles.length > 0) {

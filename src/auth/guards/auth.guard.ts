@@ -1,10 +1,5 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { UserRole } from "@prisma/__generated__";
-import { Observable } from "rxjs";
-import { ROLES_KEY } from "../decorators/roles.decorator";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserService } from "@/user/user.service";
-import { Request } from "express";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
