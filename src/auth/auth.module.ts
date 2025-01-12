@@ -9,6 +9,7 @@ import { ProviderModule } from './provider/provider.module';
 import { getProvidersConfig } from '@/config/providers.config';
 import { MailService } from "@/libs/mail/mail.service";
 import { EmailConfirmationModule } from "@/auth/email-confirmation/email-confirmation.module";
+import { PasswordRecoveryModule } from "@/auth/password-recovery/password-recovery.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { EmailConfirmationModule } from "@/auth/email-confirmation/email-confirm
       inject: [ConfigService]
     }),
     forwardRef(() => EmailConfirmationModule),
+    PasswordRecoveryModule
   ],
   controllers: [AuthController],
   providers: [AuthService, UserService, MailService],

@@ -56,4 +56,17 @@ export class UserService {
 
         return user
     }
+
+    public async updatePassword(userId: string, newPassword: string) {
+        await this.prismaService.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                password: await hash(newPassword)
+            }
+        })
+
+        return true
+    }
 } 

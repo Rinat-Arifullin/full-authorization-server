@@ -3,7 +3,6 @@ import { UserService } from "@/user/user.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
     public constructor(private readonly userService: UserService) { }
 
     public async canActivate(context: ExecutionContext): Promise<boolean> {

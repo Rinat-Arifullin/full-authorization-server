@@ -114,16 +114,18 @@ export class AuthService {
 
     public async logout(req: Request, res: Response): Promise<void> {
         return new Promise((resolve, reject) => {
-            req.session.destroy((err) => {
+            req.session.destroy(err => {
                 if (err) {
                     return reject(
-                        new InternalServerErrorException(
-                            'Не удалось завершить сессию. Возможно, возникла проблема с сервером или сессия уже была завершена.'
-                        )
+                      new InternalServerErrorException(
+                        'Не удалось завершить сессию. Возможно, возникла проблема с сервером или сессия уже была завершена.'
+                      )
                     )
                 }
-                res.clearCookie(this.configService.getOrThrow<string>("SESSION_NAME"))
-                return resolve()
+                res.clearCookie(
+                  this.configService.getOrThrow<string>('SESSION_NAME')
+                )
+                resolve()
             })
         })
     }

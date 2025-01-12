@@ -9,7 +9,10 @@ export class EmailConfirmationController {
 
   @Post()
   @HttpCode(HttpStatus.OK)
-  public async verificationByToken(@Req() req: Request, @Body() dto: EmailConfirmationDto) {
+  public async verificationByToken(
+    @Req() req: Request,
+    @Body() dto: EmailConfirmationDto
+  ) {
     return this.emailConfirmationService.verificationByToken(req, dto)
   }
 }
