@@ -37,13 +37,11 @@ export class PasswordRecoveryService {
       this.tokenService.deleteToken(existingToken.id)
     ])
 
-    // Нужно ли разлогинить пользователя и удалить старые сессии?
     return {
       message: 'Пароль обновлен. Вы можете зайти в свой профиль по новому паролю.'
     }
   }
 
-  // Нужно ли разлогинить пользователя и удалить старые сессии?
   public async resetPassword(dto: ResetPasswordDto) {
     const existingUser =
       await this.userService.findByEmail(dto.email);
@@ -55,7 +53,7 @@ export class PasswordRecoveryService {
       )
     }
 
-    await this.sendPasswordResetToken(existingUser)
+    await this.sendPasswordResetToken(existingUser.email)
 
     return {
       message: 'Писмо для подтверждения сброса пароля отправленно вам на почту. ' +
@@ -63,12 +61,12 @@ export class PasswordRecoveryService {
     }
   }
 
-  private async sendPasswordResetToken(user: User) {
+  private async sendPasswordResetToken(email: string) {
     const passwordResetToken =
-      await this.generatePasswordRecoveryToken(user.email);
+      await this.generatePasswordRecoveryToken(email);
 
     await this.mailService.sendPasswordResetEmail(
-      user.email,
+      email,
       passwordResetToken.token
     );
 

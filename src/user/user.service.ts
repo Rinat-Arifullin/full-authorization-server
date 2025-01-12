@@ -2,6 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AuthMethod } from '@prisma/__generated__';
 import { hash } from 'argon2';
+import { UpdateUserDto } from "@/user/dto/updateUserDto";
 
 @Injectable()
 export class UserService {
@@ -68,5 +69,18 @@ export class UserService {
         })
 
         return true
+    }
+
+    public async update(userId: string, dto: UpdateUserDto) {
+        await this.findById(userId);
+
+        const updatedUser = await this.prismaService.user.update({
+            where: {
+                id: userId
+            },
+            data: dto
+        })
+
+        return updatedUser
     }
 } 

@@ -10,6 +10,8 @@ import { getProvidersConfig } from '@/config/providers.config';
 import { MailService } from "@/libs/mail/mail.service";
 import { EmailConfirmationModule } from "@/auth/email-confirmation/email-confirmation.module";
 import { PasswordRecoveryModule } from "@/auth/password-recovery/password-recovery.module";
+import { TwoFactorAuthService } from "@/auth/two-factor-auth/two-factor-auth.service";
+import { TokenService } from "@/token/token.service";
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { PasswordRecoveryModule } from "@/auth/password-recovery/password-recove
     PasswordRecoveryModule
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, MailService],
+  providers: [AuthService, UserService, MailService, TokenService, TwoFactorAuthService],
   exports: [AuthService]
 })
 export class AuthModule { }
