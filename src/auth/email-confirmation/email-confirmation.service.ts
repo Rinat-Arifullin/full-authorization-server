@@ -1,5 +1,4 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from "@/prisma/prisma.service";
 import { TokenType, User } from "@prisma/__generated__";
 import { Request } from 'express';
@@ -7,6 +6,8 @@ import { EmailConfirmationDto } from "@/auth/email-confirmation/dto/confirmation
 import { MailService } from "@/libs/mail/mail.service";
 import { UserService } from "@/user/user.service";
 import { AuthService } from "@/auth/auth.service";
+import { TokenService } from "@/token/token.service";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class EmailConfirmationService {
@@ -14,6 +15,7 @@ export class EmailConfirmationService {
     private readonly prismaService: PrismaService,
     private readonly mailService: MailService,
     private readonly userService: UserService,
+    private readonly tokenService: TokenService,
     @Inject(forwardRef(() => AuthService)) private readonly authService: AuthService,
   ) {}
 
@@ -57,12 +59,7 @@ export class EmailConfirmationService {
       }
     })
 
-    await this.prismaService.token.delete({
-      where: {
-        id: existingToken.id,
-        type: TokenType.VERIFICATION
-      }
-    })
+    await this.tokenService.deleteToken(existingToken.id)
 
     return this.authService.saveSession(req, existingUser)
   }
@@ -79,34 +76,10 @@ export class EmailConfirmationService {
   }
 
   private async generateVerificationToken(email: string) {
-    const token = uuidv4()
-    const expiresIn = new Date(new Date().getTime() + 3600 * 1000)
-
-    const existingToken = await this.prismaService.token.findFirst({
-      where: {
-        email,
-        type: TokenType.VERIFICATION
-      }
+    return this.tokenService.generateToken({
+      email,
+      tokenType: TokenType.VERIFICATION,
+      getTokenFn: uuidv4
     })
-
-    if (existingToken) {
-      await this.prismaService.token.delete({
-        where: {
-          id: existingToken.id,
-          type: TokenType.VERIFICATION
-        }
-      })
-    }
-
-    const verificationToken = await this.prismaService.token.create({
-      data: {
-        email,
-        token,
-        expiresIn,
-        type: TokenType.VERIFICATION
-      }
-    })
-
-    return verificationToken
   }
 }

@@ -8,6 +8,9 @@ import { ProviderModule } from './auth/provider/provider.module';
 
 import { EmailConfirmationModule } from '@/auth/email-confirmation/email-confirmation.module';
 import { MailModule } from "@/libs/mail/mail.module";
+import { PasswordRecoveryModule } from '@/auth/password-recovery/password-recovery.module';
+import { TokenModule } from './token/token.module';
+import { TwoFactorAuthModule } from '@/auth/two-factor-auth/two-factor-auth.module';
 
 
 @Module({
@@ -21,7 +24,10 @@ import { MailModule } from "@/libs/mail/mail.module";
     UserModule,
     ProviderModule,
     MailModule,
-    EmailConfirmationModule
+    EmailConfirmationModule,
+    PasswordRecoveryModule,
+    TokenModule,
+    TwoFactorAuthModule
   ]
 })
 

@@ -7,25 +7,33 @@ import { Recaptcha } from '@nestlab/google-recaptcha';
 import { AuthProviderGuard } from './guards/provider.guard';
 import { ProviderService } from './provider/provider.service';
 import { ConfigService } from '@nestjs/config';
+import { Authorization } from "@/auth/decorators/auth.decorator";
 
 @Controller('auth')
 export class AuthController {
   public constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
-    private readonly providerService: ProviderService
+    private readonly providerService: ProviderService,
   ) { }
+
   @Recaptcha()
   @Post('register')
   @HttpCode(HttpStatus.OK)
-  public async register(@Req() req: Request, @Body() dto: RegisterDto, er) {
+  public async register(
+    @Req() req: Request,
+    @Body() dto: RegisterDto
+  ) {
     return this.authService.register(req, dto)
   }
 
   @Recaptcha()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Req() req: Request, @Body() dto: LoginDto, er) {
+  public async login(
+    @Req() req: Request,
+    @Body() dto: LoginDto
+  ) {
     return this.authService.login(req, dto)
   }
 
@@ -53,15 +61,21 @@ export class AuthController {
   @Get('/oauth/connect/:provider')
   @HttpCode(HttpStatus.OK)
   public async connect(@Param('provider') provider: string) {
-    const providerInstance = this.providerService.findByService(provider)
+    const providerInstance =
+      this.providerService.findByService(provider)
+
     return {
       url: providerInstance.getAuthUrl()
     }
   }
 
+  @Authorization()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  public async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response, er) {
+  public async logout(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response
+  ) {
     return this.authService.logout(req, res)
   }
 }

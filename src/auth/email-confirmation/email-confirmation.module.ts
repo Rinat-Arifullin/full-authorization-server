@@ -6,11 +6,12 @@ import { AuthModule } from "@/auth/auth.module";
 import { UserService } from "@/user/user.service";
 import { MailService } from "@/libs/mail/mail.service";
 import { MailModule } from "@/libs/mail/mail.module";
+import { TokenService } from "@/token/token.service";
 
 @Module({
   imports: [MailModule, forwardRef(()=> AuthModule)],
   controllers: [EmailConfirmationController],
-  providers: [EmailConfirmationService, UserService, MailService],
+  providers: [EmailConfirmationService, UserService, MailService, TokenService],
   exports: [EmailConfirmationService]
 })
 
