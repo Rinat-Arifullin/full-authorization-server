@@ -25,7 +25,7 @@ export class UserController {
 
   @Authorization()
   @HttpCode(HttpStatus.OK)
-  @Patch('by-id/:id')
+  @Patch('profile')
   public async updateProfile(
     @Authorized('id') userId: string,
     @Body() dto: UpdateUserDto
